@@ -2,7 +2,9 @@ package main
 
 import (
 	"crypto/rsa"
+	"encoding/json"
 	"math/big"
+	"reflect"
 	"testing"
 )
 
@@ -13,15 +15,11 @@ func b(x int64) *big.Int {
 func TestGetDefaultRSAPublicKey(t *testing.T) {
 	key := &rsa.PublicKey{b(31 * 11), 3}
 	pk := GetDefaultRSAPublicKey(key)
-	niceKey, ok := pk.Key.(*RSAPublicKey)
-	if !ok {
-		t.Error("bad key type")
-		return
-	}
-	if big.NewInt(31*11).Cmp(niceKey.N) != 0 {
+
+	if big.NewInt(31*11).Cmp(pk.Key.N) != 0 {
 		t.Error("bad N")
 	}
-	if 3 != niceKey.E {
+	if 3 != pk.Key.E {
 		t.Error("bad e")
 	}
 }
@@ -37,21 +35,50 @@ func TestGetDefaultRSAPrivateKey(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	niceKey, ok := pk.Key.(*RSAPrivateKey)
-	if !ok {
-		t.Error("bad key type")
+	if pk.Key.D.Int64() != 3 {
+		t.Error("bad D")
+	}
+	if pk.Key.E != 7 {
+		t.Error("bad D")
+	}
+	if pk.Key.P.Int64() != 3 {
+		t.Error("bad D")
+	}
+	if pk.Key.Q.Int64() != 11 {
+		t.Error("bad D")
+	}
+}
+
+func TestRSAPrivateKeyJsonification(t *testing.T) {
+	key := &RSAPrivateKey{b(1023), b(2112), b(328723), b(2332), 89}
+	data, err := json.Marshal(key)
+	if err != nil {
+		t.Error(err)
 		return
 	}
-	if niceKey.D.Int64() != 3 {
-		t.Error("bad D")
+	key2 := new(RSAPrivateKey)
+	if err := json.Unmarshal(data, key2); err != nil {
+		t.Error(err)
+		return
 	}
-	if niceKey.E != 7 {
-		t.Error("bad D")
+	if !reflect.DeepEqual(key, key2) {
+		t.Fail()
 	}
-	if niceKey.P.Int64() != 3 {
-		t.Error("bad D")
+}
+
+func TestRSAPublicKeyJsonification(t *testing.T) {
+	key := &RSAPublicKey{b(1023), 89}
+	data, err := json.Marshal(key)
+	if err != nil {
+		t.Error(err)
+		return
 	}
-	if niceKey.Q.Int64() != 11 {
-		t.Error("bad D")
+	key2 := new(RSAPublicKey)
+	if err := json.Unmarshal(data, key2); err != nil {
+		t.Error(err)
+		return
+	}
+	if !reflect.DeepEqual(key, key2) {
+		t.Fail()
 	}
 }

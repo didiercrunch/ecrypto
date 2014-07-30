@@ -17,7 +17,10 @@ var createKeyCommand = cli.Command{
 	},
 	Action: func(c *cli.Context) {
 		keyGenerator := new(KeyGenerator)
-		keyGenerator.CreateNewKey(c.Int("size"), c.String("password"))
+		fmt.Println("creating key")
+		if err := keyGenerator.CreateNewKey(c.Int("size")); err != nil {
+			fmt.Println("error while creating the key\n", err)
+		}
 	},
 }
 
@@ -29,6 +32,5 @@ func main() {
 		createKeyCommand,
 	}
 
-	fmt.Println(os.Args)
 	app.Run(os.Args)
 }
