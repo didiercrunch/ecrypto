@@ -1,7 +1,8 @@
-package main
+package keygenerator
 
 import (
 	"encoding/json"
+	"github.com/didiercrunch/ecrypto/keys"
 	"io/ioutil"
 	"os"
 	"path"
@@ -43,7 +44,7 @@ func TestSaveKeyAsJSON(t *testing.T) {
 		t.Error(err)
 		return
 	}
-	pk := new(PrivateKey)
+	pk := new(keys.PrivateKey)
 	if err := json.Unmarshal(data, pk); err != nil {
 		t.Error(err)
 		return

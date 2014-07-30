@@ -7,6 +7,8 @@ import (
 	"path"
 )
 
+const VERSION = "0.0.1"
+
 var ecryptoDir string
 
 func ensureEcryptoDirectoryIsOkay(dir string) error {

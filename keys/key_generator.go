@@ -1,10 +1,11 @@
-package main
+package keys
 
 import (
 	"crypto/rsa"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/didiercrunch/ecrypto/shared"
 	"math/big"
 )
 
@@ -143,7 +144,7 @@ func GetDefaultRSAPublicKey(publicKey *rsa.PublicKey) *PublicKey {
 		DEFAULT_BLOCK_CYPHER_MODE,
 		DEFAULT_HASH_FUNCTION,
 	}
-	return &PublicKey{Type: "RSA", Version: VERSION, Key: key, Accept: accept}
+	return &PublicKey{Type: "RSA", Version: shared.VERSION, Key: key, Accept: accept}
 }
 
 func GetDefaultRSAPrivateKey(publicKey *rsa.PrivateKey) (*PrivateKey, error) {
@@ -156,5 +157,5 @@ func GetDefaultRSAPrivateKey(publicKey *rsa.PrivateKey) (*PrivateKey, error) {
 		DEFAULT_BLOCK_CYPHER_MODE,
 		DEFAULT_HASH_FUNCTION,
 	}
-	return &PrivateKey{Type: "RSA", Version: VERSION, Key: key, Accept: accept}, nil
+	return &PrivateKey{Type: "RSA", Version: shared.VERSION, Key: key, Accept: accept}, nil
 }

@@ -1,18 +1,19 @@
-package main
+package keygenerator
 
 import (
 	"crypto/rand"
 	"crypto/rsa"
 	"encoding/json"
 	"errors"
+	"github.com/didiercrunch/ecrypto/keys"
 	"github.com/didiercrunch/ecrypto/shared"
 	"os"
 	"path"
 )
 
 type KeyGenerator struct {
-	publicKey  *PublicKey
-	privateKey *PrivateKey
+	publicKey  *keys.PublicKey
+	privateKey *keys.PrivateKey
 }
 
 func (this *KeyGenerator) ensureDirectoryExists(dir string) error {
@@ -53,10 +54,10 @@ func (this *KeyGenerator) createRSAKey(size int) error {
 		return errors.New("cannot generate the rsa public/private key pair\n" + err.Error())
 	}
 
-	if this.privateKey, err = GetDefaultRSAPrivateKey(rsaPrivateKey); err != nil {
+	if this.privateKey, err = keys.GetDefaultRSAPrivateKey(rsaPrivateKey); err != nil {
 		return errors.New("cannot generate the rsa public/private key pair\n" + err.Error())
 	}
-	this.publicKey = GetDefaultRSAPublicKey(&rsaPrivateKey.PublicKey)
+	this.publicKey = keys.GetDefaultRSAPublicKey(&rsaPrivateKey.PublicKey)
 	return nil
 }
 
