@@ -26,7 +26,6 @@ func (this *KeyGenerator) ensureDirectoryExists(dir string) error {
 		return errors.New(dir + " is not a directory")
 	}
 	return nil
-
 }
 
 func (this *KeyGenerator) saveKeyAsJSON(key interface{}, filepath string) error {
