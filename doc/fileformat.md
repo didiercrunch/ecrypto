@@ -2,12 +2,8 @@
 ### public key
 Note that any private key are a public key.
 
-~~~
-
-~~~
 
 ### private key
-
 
 
 
@@ -22,4 +18,62 @@ else than a zip file containing the following shit.
     *  mode
     *  encrypted symetric key
     *  hash of the encrypted data (always use full for validation)
-3.  a 'signature' file with the signature of the `meta_data.yml` file
+3.  a 'signature' file with the signature of the `meta_data.yml` filefunc (this *RsaSha512) encrypt() ([]byte, error) {
+
+}
+
+
+~~~
+
+	 _____________________________________________________________________
+	|           
+	|	Envelop:  zip file, no compression, no encryption
+	|	 _________________________________________________________________
+	|	|	
+	|	|	Paiload key:  cyphered by target pulic key
+	|	|______________________________________________________________
+	|
+	|	 _____________________________________________________________________
+	|	|	
+	|	|	Envelop meta data:  encryption type, mode, Paiload signature (yaml)
+	|	|________________________________________________________________________
+	|
+	|	 ________________________________________________________________________
+	|	|	
+	|	|	Paiload:  Zip file, no compression, symetrcally encrypted
+	|	|	 _________________________________________________________________
+	|	|	|
+	|	|	|	paiload intern metadata: Data signature, sender, message,... 
+	|	|	|_________________________________________________________________
+	|	|	
+	|	|	 _________________________________________________________________
+	|	|	|
+	|	|	|	Data:  Zip file, high compression
+	|	|	|
+	|	|	|
+	|	|	|
+	|	|	|
+	|	|	|
+	|	|	|
+	|	|	|
+	|	|	|
+	|	|	|
+	|	|	|
+	|	|	|
+	|	|	|
+	|	|	|
+	|	|	|
+	|	|	|
+	|	|	|
+	|	|	|
+	|	|	|
+	|	|	|
+	|	|	|
+	|	|	|
+	|	|	|____________________________________________________________________
+	|	|
+	|	|_________________________________________________________________________
+	|
+	|______________________________________________________________________________
+	
+~~~

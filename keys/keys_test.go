@@ -3,17 +3,14 @@ package keys
 import (
 	"crypto/rsa"
 	"encoding/json"
+	. "github.com/didiercrunch/ecrypto/helper"
 	"math/big"
 	"reflect"
 	"testing"
 )
 
-func b(x int64) *big.Int {
-	return big.NewInt(x)
-}
-
 func TestGetDefaultRSAPublicKey(t *testing.T) {
-	key := &rsa.PublicKey{b(31 * 11), 3}
+	key := &rsa.PublicKey{B(31 * 11), 3}
 	pk := GetDefaultRSAPublicKey(key)
 
 	if big.NewInt(31*11).Cmp(pk.Key.N) != 0 {
@@ -26,9 +23,9 @@ func TestGetDefaultRSAPublicKey(t *testing.T) {
 
 func TestGetDefaultRSAPrivateKey(t *testing.T) {
 	privKey := &rsa.PrivateKey{
-		rsa.PublicKey{b(3 * 11), 7},
-		b(3),
-		[]*big.Int{b(3), b(11)},
+		rsa.PublicKey{B(3 * 11), 7},
+		B(3),
+		[]*big.Int{B(3), B(11)},
 		rsa.PrecomputedValues{},
 	}
 	pk, err := GetDefaultRSAPrivateKey(privKey)
@@ -50,7 +47,7 @@ func TestGetDefaultRSAPrivateKey(t *testing.T) {
 }
 
 func TestRSAPrivateKeyJsonification(t *testing.T) {
-	key := &RSAPrivateKey{b(1023), b(2112), b(328723), b(2332), 89}
+	key := &RSAPrivateKey{B(1023), B(2112), B(328723), B(2332), 89}
 	data, err := json.Marshal(key)
 	if err != nil {
 		t.Error(err)
@@ -67,7 +64,7 @@ func TestRSAPrivateKeyJsonification(t *testing.T) {
 }
 
 func TestRSAPublicKeyJsonification(t *testing.T) {
-	key := &RSAPublicKey{b(1023), 89}
+	key := &RSAPublicKey{B(1023), 89}
 	data, err := json.Marshal(key)
 	if err != nil {
 		t.Error(err)
