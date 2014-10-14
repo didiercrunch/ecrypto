@@ -95,7 +95,12 @@ func (this *Enveloper) WriteToWriter(w io.Writer) error {
 	defer z.Close()
 	if err := this.WritePayload(z); err != nil {
 		return err
-	} else if err := this.WriteMetadata(z); err != nil {
+	}
+	if err := this.CreateEnvelopCompletely(); err != nil {
+		return err
+	}
+
+	if err := this.WriteMetadata(z); err != nil {
 		return err
 	} else if err := this.WriteEncryptedKey(z); err != nil {
 		return err

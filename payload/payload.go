@@ -23,7 +23,7 @@ type Payload struct {
 	DataSource io.Reader
 	Hash       crypto.Hash
 	Block      cipher.Block
-	BlockMode  cipher.BlockMode
+	BlockMode  cipher.Stream
 }
 
 func (this *Payload) GetHashMethod() string {

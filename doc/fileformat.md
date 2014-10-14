@@ -42,7 +42,7 @@ else than a zip file containing the following shit.
 	|	|	Paiload:  Zip file, no compression, symetrcally encrypted
 	|	|	 _____________________________________________________________________
 	|	|	|
-	|	|	|	paiload intern metadata: Data signature, sender, message,... 
+	|	|	|	paiload intern metadata: Data signature, sender, message, IV, ... 
 	|	|	|______________________________________________________________________
 	|	|	
 	|	|	 _______________________________________________________________________
