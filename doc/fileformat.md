@@ -18,35 +18,34 @@ else than a zip file containing the following shit.
     *  mode
     *  encrypted symetric key
     *  hash of the encrypted data (always use full for validation)
-3.  a 'signature' file with the signature of the `meta_data.yml` filefunc (this *RsaSha512) encrypt() ([]byte, error) {
-
-}
+3.  a 'signature' file with the signature of the `meta_data.yml` file
+    func (this *RsaSha512) encrypt() ([]byte, error) {}
 
 
 ~~~
 
-	 _____________________________________________________________________
+	 _____________________________________________________________________________
 	|           
 	|	Envelop:  zip file, no compression, no encryption
-	|	 _________________________________________________________________
-	|	|	
-	|	|	Paiload key:  cyphered by target pulic key
-	|	|______________________________________________________________
-	|
-	|	 _____________________________________________________________________
-	|	|	
-	|	|	Envelop meta data:  encryption type, mode, Paiload signature (yaml)
-	|	|________________________________________________________________________
-	|
 	|	 ________________________________________________________________________
 	|	|	
+	|	|	Paiload key:  cyphered by target pulic key
+	|	|________________________________________________________________________
+	|
+	|	 _________________________________________________________________________
+	|	|	
+	|	|	Envelop meta data:  encryption type, mode, Paiload signature (yaml)
+	|	|__________________________________________________________________________
+	|
+	|	 __________________________________________________________________________
+	|	|	
 	|	|	Paiload:  Zip file, no compression, symetrcally encrypted
-	|	|	 _________________________________________________________________
+	|	|	 _____________________________________________________________________
 	|	|	|
 	|	|	|	paiload intern metadata: Data signature, sender, message,... 
-	|	|	|_________________________________________________________________
+	|	|	|______________________________________________________________________
 	|	|	
-	|	|	 _________________________________________________________________
+	|	|	 _______________________________________________________________________
 	|	|	|
 	|	|	|	Data:  Zip file, high compression
 	|	|	|

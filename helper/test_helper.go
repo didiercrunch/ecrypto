@@ -1,8 +1,10 @@
 package helper
 
 import (
+	"bytes"
 	"crypto/rsa"
 	"encoding/binary"
+	"io"
 	"math/big"
 	"math/rand"
 )
@@ -62,6 +64,14 @@ func (this *MockIoWriter) Length() int {
 
 func (this *MockIoWriter) Bytes() []byte {
 	return this.state
+}
+
+func (this *MockIoWriter) Reader() io.Reader {
+	return bytes.NewReader(this.state)
+}
+
+func (this *MockIoWriter) ReaderAt() io.ReaderAt {
+	return bytes.NewReader(this.state)
 }
 
 func Range(length int) []byte {

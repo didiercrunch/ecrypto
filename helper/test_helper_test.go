@@ -2,6 +2,7 @@ package helper
 
 import (
 	"fmt"
+	"io/ioutil"
 	"math/big"
 	"math/rand"
 	"reflect"
@@ -35,6 +36,10 @@ func TestMockIoWriter(t *testing.T) {
 		t.Fail()
 	} else if w.Length() != len("something to write") {
 		t.Fail()
+	} else if readerOutput, err := ioutil.ReadAll(w.Reader()); err != nil {
+		t.Error(err)
+	} else if "something to write" != string(readerOutput) {
+		t.Error("bad reader")
 	}
 }
 
