@@ -3,11 +3,13 @@ package payload
 import (
 	"crypto"
 	"crypto/cipher"
+	"fmt"
 	"io"
 )
 
-/*
+var _ = fmt.Print
 
+/*
 	type Payload interface {
 		GetHash() []byte
 		GetKey() []byte
@@ -16,14 +18,19 @@ import (
 		GetHashMethod() string
 		GetPayloadData() io.Reader
 	}
-
 */
+
+type BlockMode string
+
+const OFB BlockMode = "ofb"
+
+type BlockModeStream func(block cipher.Block, iv []byte) cipher.Stream
 
 type Payload struct {
 	DataSource io.Reader
 	Hash       crypto.Hash
-	Block      cipher.Block
-	BlockMode  cipher.Stream
+	Block      Block
+	BlockMode  BlockMode
 }
 
 func (this *Payload) GetHashMethod() string {
@@ -52,6 +59,26 @@ func (this *Payload) GetHashMethod() string {
 }
 
 func (this *Payload) GetPayloadData() io.Reader {
-	//  this.BlockMode.
+	//  zip data source
+
+	// create metadata
+	// zip the zipped data and metadata
+
+	// encryptp everything togeter
 	return nil
+}
+
+func (this *Payload) getStream() cipher.Stream {
+	return nil //this.BlockMode
+}
+
+func (this *Payload) encrypt(reader io.Reader) io.Reader {
+	ret, writer := io.Pipe()
+	go func() {
+		cipherWriter := &cipher.StreamWriter{S: this.getStream(), W: writer}
+		io.Copy(cipherWriter, reader)
+		cipherWriter.Close()
+	}()
+	return ret
+
 }

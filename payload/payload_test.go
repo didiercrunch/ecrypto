@@ -1,7 +1,9 @@
 package payload
 
 import (
+	"bytes"
 	"crypto"
+	"io/ioutil"
 	"testing"
 )
 
@@ -22,6 +24,27 @@ func TestPayloadGetHashMethod(t *testing.T) {
 		if returnedName := p.GetHashMethod(); returnedName != name {
 			t.Error("bad hash name.  supposed to be ", name, " but received", returnedName)
 		}
+	}
+}
+
+func TestGetStream(t *testing.T) {
+	p := new(Payload)
+	if s := p.getStream(); s != nil {
+		t.Fail()
+	}
+}
+
+func TestEncrypt(t *testing.T) {
+	if true {
+		return
+	}
+	p := new(Payload)
+	data := bytes.NewBufferString("nice string")
+	reader := p.encrypt(data)
+	if outputdata, err := ioutil.ReadAll(reader); err != nil {
+		t.Error(err)
+	} else if string(outputdata) != "nice string" {
+		t.Fail()
 	}
 
 }
