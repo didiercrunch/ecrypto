@@ -6,6 +6,10 @@
 Filou is in devlopment.  It is not yet a super hyper cool program but
 we are going there.
 
+
+![travis](https://travis-ci.org/didiercrunch/filou.svg "travis")
+
+
 ## the name
 
 *Filou* is my brother, Charles Philippe Amyot, child nickname.  He died the 9th 
