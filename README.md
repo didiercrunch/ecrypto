@@ -1,48 +1,42 @@
 
-# ecrypto
+# Filou
+>  cryptogra **phy** | **loo** phole
 
 
-ecrypto is in devlopment.  It is not yet a super hyper cool program but
+Filou is in devlopment.  It is not yet a super hyper cool program but
 we are going there.
 
-###  name
+## the name
 
-*ecrypto* really sucks.  Let's find a better name.
-
-*  *ecrypto* (easy-crypto)
-*  *nfc* (npm for cryptography)
-*  *monsieur gustave*  one needs to watch the Grand Budapest Hotel
-
-
-
-
+*Filou* was my brother nickname.  He died the 9th octobre 2014.  This program is
+dedicated to his memory.
 
 ## Use case
 
-ecrypto is the *npm* for cryptography.  It revolutionizes the way the people
+Filou is the *npm* for cryptography.  It revolutionizes the way the people
 use cryptography on a everyday use.  The general design is to do what programs
 like *npm* did for dependencies management but for cryptography.
 
-ecrypto user interface is a command line user interface (*CLI*) and its source
+Filou user interface is a command line user interface (*CLI*) and its source
 code.  For us, the readability of the source code is as important as the
 functionality of the software.
 
-###  using ecrypto
+###  using filou
 
 #### creating keys
 
-The first thing you want to do when using ecrypto is to create your personal
+The first thing you want to do when using filou is to create your personal
 private-public key pair.  your keys will be kept in
-your `~/.ecrypto` directory.
+your `~/.filou` directory.
 
 ~~~
-ecrypto createkey
+filou createkey
 ~~~
 
 Then, you might want to publish your public key to the public repository
 
 ~~~
-ecrypto publish -email alice@lechef.com
+filou publish -email alice@lechef.com
 ~~~
 
 #### encrypting file
@@ -53,18 +47,18 @@ things
 1.  if *bob@lechef.com*'s public key is on the public repository, you can
     simply use
     ~~~
-    ecrypto encrypt -to bob@lechef.com -file mysecretdocument.doc -out mycypherdoc.cyp
+    filou encrypt -to bob@lechef.com -file mysecretdocument.doc -out mycypherdoc.cyp
     ~~~
 
 2.  if *bob@lechef.com*'s public key is on your local file path you can use
     ~~~
-    ecrypto encrypt -to /path/to/bob@lechef.com -file mysecretdocument.doc -out mycypherdoc.cyp
+    filou encrypt -to /path/to/bob@lechef.com -file mysecretdocument.doc -out mycypherdoc.cyp
     ~~~
 
 3.  if *bob@lechef.com*'s public key is on accessible on a public url you can
     use
     ~~~
-    ecrypto encrypt -to https://example.com/path/to/bob@lechef.com -file mysecretdocument.doc -out mycypherdoc.cyp
+    filou encrypt -to https://example.com/path/to/bob@lechef.com -file mysecretdocument.doc -out mycypherdoc.cyp
     ~~~
 
 In anycase, the command line output will be a cypher file called 
@@ -77,11 +71,11 @@ Once you received a file `encrypted_file.cyp`, you can decrypt it via the
 following command.
 
 ~~~
-ecrypt decrypt encrypted_file.cyp
+filou decrypt encrypted_file.cyp
 ~~~
 
 
-#### so you want to hack ecrypto
+#### so you want to hack filou
 
 
 
