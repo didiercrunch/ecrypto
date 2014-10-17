@@ -3,7 +3,7 @@ package payload
 import (
 	"crypto/cipher"
 	"crypto/des"
-	"github.com/didiercrunch/ecrypto/helper"
+	"github.com/didiercrunch/filou/helper"
 	"testing"
 )
 

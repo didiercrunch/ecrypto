@@ -2,7 +2,7 @@ package keygenerator
 
 import (
 	"encoding/json"
-	"github.com/didiercrunch/ecrypto/keys"
+	"github.com/didiercrunch/filou/keys"
 	"io/ioutil"
 	"os"
 	"path"

@@ -9,7 +9,7 @@ Note that any private key are a public key.
 
 ### cypher format
 
-We use the `.cyp` file extension for the encrypted file.  A .cyp is nothing
+We use the `.filou` file extension for the encrypted file.  A .filou is nothing
 else than a zip file containing the following shit.
 
 1.  a `data.encrypted` containing the encrypted data

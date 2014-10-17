@@ -5,7 +5,7 @@ import (
 	cryptoSHA512 "crypto/sha512"
 	"encoding/hex"
 	"errors"
-	"github.com/didiercrunch/ecrypto/helper"
+	"github.com/didiercrunch/filou/helper"
 	"hash"
 	"io"
 	"io/ioutil"

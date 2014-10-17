@@ -1,6 +1,6 @@
 
 # Filou
->  cryptogra **phy** | **loo** phole
+>  cryptogra**phy**  (no) **loo** phole
 
 
 Filou is in devlopment.  It is not yet a super hyper cool program but
@@ -8,8 +8,8 @@ we are going there.
 
 ## the name
 
-*Filou* was my brother nickname.  He died the 9th octobre 2014.  This program is
-dedicated to his memory.
+*Filou* is my brother, Charles Philippe Amyot, child nickname.  He died the 9th 
+octobre 2014.  This program is dedicated to his memory.
 
 ## Use case
 

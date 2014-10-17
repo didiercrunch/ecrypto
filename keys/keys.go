@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/didiercrunch/ecrypto/shared"
+	"github.com/didiercrunch/filou/shared"
 	"math/big"
 )
 

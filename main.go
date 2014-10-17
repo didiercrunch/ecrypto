@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/codegangsta/cli"
-	"github.com/didiercrunch/ecrypto/keygenerator"
+	"github.com/didiercrunch/filou/keygenerator"
 	"os"
 )
 
@@ -40,7 +40,7 @@ var encryptFileCommand = cli.Command{
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "ecrypto"
+	app.Name = "filou"
 	app.Usage = "encrypt files"
 	app.Commands = []cli.Command{
 		createKeyCommand,

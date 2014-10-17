@@ -5,8 +5,8 @@ import (
 	"crypto/rsa"
 	"encoding/json"
 	"errors"
-	"github.com/didiercrunch/ecrypto/keys"
-	"github.com/didiercrunch/ecrypto/shared"
+	"github.com/didiercrunch/filou/keys"
+	"github.com/didiercrunch/filou/shared"
 	"os"
 	"path"
 )

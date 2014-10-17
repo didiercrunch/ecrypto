@@ -6,7 +6,7 @@ import (
 	"crypto/rsa"
 	"crypto/sha512"
 	"fmt"
-	"github.com/didiercrunch/ecrypto/helper"
+	"github.com/didiercrunch/filou/helper"
 	"testing"
 )
 

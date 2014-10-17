@@ -3,7 +3,7 @@ package keys
 import (
 	"crypto/rsa"
 	"encoding/json"
-	. "github.com/didiercrunch/ecrypto/helper"
+	. "github.com/didiercrunch/filou/helper"
 	"math/big"
 	"reflect"
 	"testing"

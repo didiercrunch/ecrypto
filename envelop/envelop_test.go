@@ -5,7 +5,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/didiercrunch/ecrypto/helper"
+	"github.com/didiercrunch/filou/helper"
 	"io"
 	"reflect"
 	"testing"

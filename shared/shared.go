@@ -9,7 +9,7 @@ import (
 
 const VERSION = "0.0.1"
 
-var ecryptoDir string
+var filouDir string
 
 func ensureEcryptoDirectoryIsOkay(dir string) error {
 	stat, err := os.Stat(dir)
@@ -28,8 +28,8 @@ func ensureEcryptoDirectoryIsOkay(dir string) error {
 }
 
 func init() {
-	ecryptoDir = path.Join(os.Getenv("HOME"), ".ecrypto")
-	if err := ensureEcryptoDirectoryIsOkay(ecryptoDir); err != nil {
+	filouDir = path.Join(os.Getenv("HOME"), ".filou")
+	if err := ensureEcryptoDirectoryIsOkay(filouDir); err != nil {
 		fmt.Println("cannot work with eCrypto directory", err)
 		os.Exit(1)
 
@@ -37,5 +37,5 @@ func init() {
 }
 
 func GetEcryptoDir() string {
-	return ecryptoDir
+	return filouDir
 }

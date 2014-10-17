@@ -4,7 +4,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
-	. "github.com/didiercrunch/ecrypto/helper"
+	. "github.com/didiercrunch/filou/helper"
 	"reflect"
 	"strings"
 	"testing"
