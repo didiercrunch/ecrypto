@@ -1,6 +1,6 @@
 
 # Filou
->  cryptogra**phy**  (no) **loo** phole
+>  cryptogra<b>phy</b>  (without) <b>loo</b>phole
 
 
 Filou is in devlopment.  It is not yet a super hyper cool program but
