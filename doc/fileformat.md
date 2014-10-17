@@ -34,7 +34,7 @@ else than a zip file containing the following shit.
 	|
 	|	 _________________________________________________________________________
 	|	|	
-	|	|	Envelop meta data:  encryption type, mode, Paiload signature (yaml)
+	|	|	Envelop meta data:  encryption type, mode, Paiload signature (yaml), IV,..
 	|	|__________________________________________________________________________
 	|
 	|	 __________________________________________________________________________
@@ -42,12 +42,12 @@ else than a zip file containing the following shit.
 	|	|	Paiload:  Zip file, no compression, symetrcally encrypted
 	|	|	 _____________________________________________________________________
 	|	|	|
-	|	|	|	paiload intern metadata: Data signature, sender, message, IV, ... 
+	|	|	|	paiload intern metadata: Data signature, sender, message ... 
 	|	|	|______________________________________________________________________
 	|	|	
 	|	|	 _______________________________________________________________________
 	|	|	|
-	|	|	|	Data:  Zip file, high compression
+	|	|	|	Data:  Can be anything.  But for file and folders, it will be zipped
 	|	|	|
 	|	|	|
 	|	|	|

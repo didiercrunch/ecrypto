@@ -36,11 +36,12 @@ func createRandomKey(lengthInBits int, rd io.Reader) ([]byte, error) {
 	}
 }
 
-func (this Block) CreateBlock(rd io.Reader) (cipher.Block, error) {
+func (this Block) CreateBlock(rd io.Reader) (cipher.Block, []byte, error) {
 	var err error
 	key := make([]byte, 256/8)
 	if _, err = rd.Read(key); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	return aes.NewCipher(key)
+	block, err := aes.NewCipher(key)
+	return block, key, err
 }

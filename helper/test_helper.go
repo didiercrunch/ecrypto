@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/rsa"
 	"encoding/binary"
+	"encoding/json"
 	"io"
 	"math/big"
 	"math/rand"
@@ -14,11 +15,12 @@ func B(x int64) *big.Int {
 }
 
 type MockRandomReader struct {
-	random *rand.Rand
+	readLength int
+	random     *rand.Rand
 }
 
 func NewMockRandomReader() *MockRandomReader {
-	return &MockRandomReader{rand.New(rand.NewSource(99))}
+	return &MockRandomReader{0, rand.New(rand.NewSource(99))}
 }
 
 func (this *MockRandomReader) getNextFourRandomBytes() []byte {
@@ -31,7 +33,12 @@ func (this *MockRandomReader) Read(p []byte) (n int, err error) {
 	for i := 0; i < len(p); i += 4 {
 		copy(p[i:], this.getNextFourRandomBytes())
 	}
+	this.readLength += len(p)
 	return len(p), nil
+}
+
+func (this *MockRandomReader) GetReadLength() int {
+	return this.readLength
 }
 
 func (this *MockRandomReader) GetRandomBytes(size int) []byte {
@@ -72,6 +79,17 @@ func (this *MockIoWriter) Reader() io.Reader {
 
 func (this *MockIoWriter) ReaderAt() io.ReaderAt {
 	return bytes.NewReader(this.state)
+}
+
+func (this *MockIoWriter) IsValidJson() bool {
+	m := make(map[string]interface{})
+	l := make([]interface{}, 0, 100)
+	if json.Unmarshal(this.Bytes(), &m) == nil {
+		return true
+	} else if json.Unmarshal(this.Bytes(), &l) == nil {
+		return true
+	}
+	return false
 }
 
 func Range(length int) []byte {

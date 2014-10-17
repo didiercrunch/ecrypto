@@ -1,84 +1,141 @@
 package payload
 
 import (
-	"crypto"
+	"archive/zip"
 	"crypto/cipher"
-	"fmt"
+	"encoding/json"
 	"io"
 )
-
-var _ = fmt.Print
-
-/*
-	type Payload interface {
-		GetHash() []byte
-		GetKey() []byte
-		GetAlgorithm() string
-		GetMode() string
-		GetHashMethod() string
-		GetPayloadData() io.Reader
-	}
-*/
-
-type BlockMode string
-
-const OFB BlockMode = "ofb"
 
 type BlockModeStream func(block cipher.Block, iv []byte) cipher.Stream
 
 type Payload struct {
 	DataSource io.Reader
-	Hash       crypto.Hash
+	Random     io.Reader
+	HashMethod Hash
 	Block      Block
 	BlockMode  BlockMode
+
+	IV   []byte
+	Key  []byte
+	Hash []byte
+}
+
+type payloadWriter struct {
+	Reader     io.Reader
+	Pipewriter io.WriteCloser
+	ZipWriter  *zip.Writer
+}
+
+func getPayloadWriter() *payloadWriter {
+	p := new(payloadWriter)
+	p.Reader, p.Pipewriter = io.Pipe()
+	p.ZipWriter = zip.NewWriter(p.Pipewriter)
+	return p
+}
+
+func (this *payloadWriter) getDataWriter() (io.Writer, error) {
+	return this.ZipWriter.Create("data")
+}
+
+func (this *payloadWriter) getMetadataWriter() (io.Writer, error) {
+	return this.ZipWriter.Create("metadata")
+}
+
+func (this *payloadWriter) Close() error {
+	if err := this.ZipWriter.Close(); err != nil {
+		return err
+	}
+	return this.Pipewriter.Close()
+
+}
+
+func (this *Payload) GetMode() string {
+	return string(this.BlockMode)
+}
+
+func (this *Payload) GetHash() []byte {
+	return this.Hash
+}
+
+func (this *Payload) GetKey() []byte {
+	return this.Key
+}
+
+func (this *Payload) GetAlgorithm() string {
+	return string(this.Block)
 }
 
 func (this *Payload) GetHashMethod() string {
-	switch this.Hash {
-	case crypto.MD5:
-		return "md5"
-	case crypto.MD4:
-		return "md4"
-	case crypto.SHA1:
-		return "sha1"
-	case crypto.MD5SHA1:
-		return "md5sha1"
-	case crypto.RIPEMD160:
-		return "ripemd160"
-	case crypto.SHA224:
-		return "sha224"
-	case crypto.SHA256:
-		return "sha256"
-	case crypto.SHA384:
-		return "sha384"
-	case crypto.SHA512:
-		return "sha512"
-	default:
-		panic("unknown hash method")
+	return string(this.HashMethod)
+}
+
+func (this *Payload) GetPayloadData() (io.Reader, error) {
+	pw := getPayloadWriter()
+	stream, err := this.getStreamAndCreateMetadata()
+	if err != nil {
+		return nil, err
 	}
+	go func(payload *Payload, pw *payloadWriter) {
+		if mdw, err := pw.getMetadataWriter(); err != nil {
+			panic(err)
+		} else if err := payload.writeMetadata(mdw); err != nil {
+			panic(err)
+		}
+
+		if mw, err := pw.getDataWriter(); err != nil {
+			panic(err)
+		} else if _, err := io.Copy(mw, payload.DataSource); err != nil {
+			panic(err)
+		}
+		if err := pw.Close(); err != nil {
+			panic(err)
+		}
+	}(this, pw)
+
+	return this.encrypt(pw.Reader, stream)
 }
 
-func (this *Payload) GetPayloadData() io.Reader {
-	//  zip data source
-
-	// create metadata
-	// zip the zipped data and metadata
-
-	// encryptp everything togeter
-	return nil
+func (this *Payload) writeMetadata(w io.Writer) error {
+	e := json.NewEncoder(w)
+	return e.Encode(this.getMetadata())
 }
 
-func (this *Payload) getStream() cipher.Stream {
-	return nil //this.BlockMode
+func (this *Payload) getMetadata() *Metadata {
+	return &Metadata{IV: this.IV, Key: this.Key}
 }
 
-func (this *Payload) encrypt(reader io.Reader) io.Reader {
+func (this *Payload) getStreamAndCreateMetadata() (stream cipher.Stream, err error) {
+	var block cipher.Block
+	block, this.Key, err = this.Block.CreateBlock(this.Random)
+	if err != nil {
+		return
+	}
+	stream, this.IV, err = this.BlockMode.GetCipherStream(block, this.Random)
+	return
+}
+
+func (this *Payload) computeHash(reader io.Reader) (io.Reader, error) {
+	readerHash := make(chan []byte)
+	read, err := this.HashMethod.HashOnTheWay(reader, readerHash)
+	if err != nil {
+		return nil, err
+	}
+	go func(readerHash chan []byte) {
+		this.Hash = <-readerHash
+	}(readerHash)
+
+	return read, nil
+
+}
+
+func (this *Payload) encrypt(reader io.Reader, stream cipher.Stream) (io.Reader, error) {
 	ret, writer := io.Pipe()
-	go func() {
-		cipherWriter := &cipher.StreamWriter{S: this.getStream(), W: writer}
+	go func(stream cipher.Stream) {
+		cipherWriter := &cipher.StreamWriter{S: stream, W: writer}
 		io.Copy(cipherWriter, reader)
 		cipherWriter.Close()
-	}()
-	return ret
+	}(stream)
+	return this.computeHash(ret)
 
 }

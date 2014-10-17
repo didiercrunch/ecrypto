@@ -43,6 +43,26 @@ func TestMockIoWriter(t *testing.T) {
 	}
 }
 
+func TestIsValidJson(t *testing.T) {
+	m := make(map[string]bool)
+	m[`{}`] = true
+	m[`[]`] = true
+	m[`[1, "abc", {"aa": true, "2": [1,2,3]}]`] = true
+	m[`{"aa": true, "2": [1,2,3]}`] = true
+
+	m[`regular string`] = false
+	m[`{"aa": true "2": [1,2,3]}`] = false // malformed json
+	for json_, isJSON := range m {
+		w := &MockIoWriter{[]byte(json_)}
+		ok := w.IsValidJson()
+		if ok && !isJSON {
+			t.Error(json_, "is not json but has been detected as json")
+		} else if !ok && isJSON {
+			t.Error(json_, "is json but has not been detected as json")
+		}
+	}
+}
+
 func TestGetRSAPublicKeyAndGetRSAPrivateKey(t *testing.T) {
 	privateKey := GetRSAPrivateKey(50)
 	if err := privateKey.Validate(); err != nil {
@@ -60,7 +80,7 @@ func TestGetRSAPublicKeyAndGetRSAPrivateKey(t *testing.T) {
 }
 
 func TestGetNextFourRandomBytes(t *testing.T) {
-	m := &MockRandomReader{rand.New(rand.NewSource(22))}
+	m := &MockRandomReader{0, rand.New(rand.NewSource(22))}
 	rb := m.getNextFourRandomBytes()
 	var expt []byte = []byte{233, 237, 107, 32}
 	if len(rb) != 4 {
@@ -101,5 +121,17 @@ func TestGetRandomBytes(t *testing.T) {
 	NewMockRandomReader().Read(expt)
 	if !reflect.DeepEqual(expt, rdBytes) {
 		t.Fail()
+	}
+}
+
+func TestGetReadLength(t *testing.T) {
+	m := NewMockRandomReader()
+	dump := make([]byte, 4*10+3)
+	if _, err := m.Read(dump); err != nil {
+		t.Error(err)
+		return
+	}
+	if m.GetReadLength() != 4*10+3 {
+		t.Error("bad read length")
 	}
 }
