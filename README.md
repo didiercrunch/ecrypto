@@ -7,7 +7,8 @@ Filou is in devlopment.  It is not yet a super hyper cool program but
 we are going there.
 
 
-![travis](https://travis-ci.org/didiercrunch/filou.svg "travis")
+[![travis](https://travis-ci.org/didiercrunch/filou.svg)](https://travis-ci.org/didiercrunch/filou/)
+[![Coverage Status](https://img.shields.io/coveralls/didiercrunch/filou.svg)](https://coveralls.io/r/didiercrunch/filou)
 
 
 ## the name
