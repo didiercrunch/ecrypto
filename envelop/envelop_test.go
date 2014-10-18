@@ -4,14 +4,11 @@ import (
 	"archive/zip"
 	"bytes"
 	"errors"
-	"fmt"
 	"github.com/didiercrunch/filou/helper"
 	"io"
 	"reflect"
 	"testing"
 )
-
-var _ = fmt.Print
 
 type mockPayload struct {
 	MethodsCall []string
@@ -77,13 +74,13 @@ func (this *mockPayload) GetHashMethod() string {
 	return theHashMethodUsedInThePayLoad
 }
 
-func (this *mockPayload) GetPayloadData() io.Reader {
+func (this *mockPayload) GetPayloadData() (io.Reader, error) {
 	this.addMethodCall("GetPayloadData")
 	someData := `some data must be here.  In reality, the data
 	             would be the encrypted payload.  This will be
 				the big chunk of the data.
 				`
-	return bytes.NewReader([]byte(someData))
+	return bytes.NewReader([]byte(someData)), nil
 }
 
 type mockEncryptor struct{}
@@ -110,8 +107,8 @@ func (this *mockSigner) Sign(data []byte) ([]byte, error) {
 
 func TestEncryptKey(t *testing.T) {
 	env := &Enveloper{
-		encryptor: &mockEncryptor{},
-		payload:   newMockPayload(),
+		publicKeyEncryptor: &mockEncryptor{},
+		payload:            newMockPayload(),
 	}
 	if enc, err := env.EncryptKey(); err != nil {
 		t.Error(err)
@@ -121,11 +118,7 @@ func TestEncryptKey(t *testing.T) {
 }
 
 func TestCreateEnvelopCompletelyEncryptKey(t *testing.T) {
-	env := &Enveloper{
-		encryptor: &mockEncryptor{},
-		payload:   newMockPayload(),
-		signer:    &mockSigner{},
-	}
+	env := NewEnveloper(&mockEncryptor{}, newMockPayload(), &mockSigner{})
 	if err := env.CreateEnvelopCompletely(); err != nil {
 		t.Error(err)
 	}
@@ -147,11 +140,7 @@ func TestSignPayload(t *testing.T) {
 }
 
 func TestCreateEnvelopCompletelySignHash(t *testing.T) {
-	env := &Enveloper{
-		payload:   newMockPayload(),
-		encryptor: &mockEncryptor{},
-		signer:    &mockSigner{},
-	}
+	env := NewEnveloper(&mockEncryptor{}, newMockPayload(), &mockSigner{})
 	if err := env.CreateEnvelopCompletely(); err != nil {
 		t.Error(err)
 	}
@@ -176,9 +165,9 @@ func TestCreateMetadata(t *testing.T) {
 
 func TestCreateEnvelopCompletelyMetadata(t *testing.T) {
 	env := &Enveloper{
-		encryptor: &mockEncryptor{},
-		payload:   newMockPayload(),
-		signer:    &mockSigner{},
+		publicKeyEncryptor: &mockEncryptor{},
+		payload:            newMockPayload(),
+		signer:             &mockSigner{},
 	}
 	if err := env.CreateEnvelopCompletely(); err != nil {
 		t.Error(err)
@@ -190,9 +179,9 @@ func TestCreateEnvelopCompletelyMetadata(t *testing.T) {
 
 func TestWriteToWriter(t *testing.T) {
 	env := &Enveloper{
-		payload:   newMockPayload(),
-		signer:    &mockSigner{},
-		encryptor: &mockEncryptor{},
+		payload:            newMockPayload(),
+		signer:             &mockSigner{},
+		publicKeyEncryptor: &mockEncryptor{},
 	}
 	w := helper.NewMockIoWriter()
 	if err := env.WriteToWriter(w); err != nil {
@@ -211,9 +200,9 @@ func TestWriteToWriter(t *testing.T) {
 func TestMethodOrder(t *testing.T) {
 	mockPayload := newMockPayload()
 	env := &Enveloper{
-		payload:   mockPayload,
-		signer:    &mockSigner{},
-		encryptor: &mockEncryptor{},
+		payload:            mockPayload,
+		signer:             &mockSigner{},
+		publicKeyEncryptor: &mockEncryptor{},
 	}
 	w := helper.NewMockIoWriter()
 	if err := env.WriteToWriter(w); err != nil {

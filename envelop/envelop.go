@@ -13,10 +13,10 @@ type Payload interface {
 	GetAlgorithm() string
 	GetMode() string
 	GetHashMethod() string
-	GetPayloadData() io.Reader
+	GetPayloadData() (io.Reader, error)
 }
 
-type Encryptor interface {
+type PublicKeyEncryptor interface {
 	Encrypt(data []byte) ([]byte, error)
 }
 
@@ -24,17 +24,25 @@ type Signer interface {
 	Sign(data []byte) ([]byte, error)
 }
 
+func NewEnveloper(publicKeyEncryptor PublicKeyEncryptor, payload Payload, signer Signer) *Enveloper {
+	return &Enveloper{
+		publicKeyEncryptor: publicKeyEncryptor,
+		payload:            payload,
+		signer:             signer,
+	}
+}
+
 type Enveloper struct {
-	encryptor    Encryptor
-	payload      Payload
-	signer       Signer
-	EncryptedKey []byte
-	Signature    []byte
-	Metadata     *Metadata
+	publicKeyEncryptor PublicKeyEncryptor
+	payload            Payload
+	signer             Signer
+	EncryptedKey       []byte
+	Signature          []byte
+	Metadata           *Metadata
 }
 
 func (this *Enveloper) EncryptKey() ([]byte, error) {
-	return this.encryptor.Encrypt(this.payload.GetKey())
+	return this.publicKeyEncryptor.Encrypt(this.payload.GetKey())
 }
 
 func (this *Enveloper) SignPayload() ([]byte, error) {
@@ -66,8 +74,12 @@ func (this *Enveloper) WritePayload(z *zip.Writer) error {
 	if err != nil {
 		return err
 	}
-	_, err = io.Copy(dataWriter, this.payload.GetPayloadData())
-	return err
+	if r, err := this.payload.GetPayloadData(); err != nil {
+		return err
+	} else if _, err = io.Copy(dataWriter, r); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (this *Enveloper) WriteMetadata(z *zip.Writer) error {

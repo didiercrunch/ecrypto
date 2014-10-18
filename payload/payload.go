@@ -3,6 +3,7 @@ package payload
 import (
 	"archive/zip"
 	"crypto/cipher"
+	"crypto/rand"
 	"encoding/json"
 	"io"
 )
@@ -19,6 +20,16 @@ type Payload struct {
 	IV   []byte
 	Key  []byte
 	Hash []byte
+}
+
+func GetDefaultPayload(dataSource io.Reader) *Payload {
+	return &Payload{
+		DataSource: dataSource,
+		Random:     rand.Reader,
+		HashMethod: SHA512,
+		Block:      AES256,
+		BlockMode:  OFB,
+	}
 }
 
 type payloadWriter struct {

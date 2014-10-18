@@ -141,5 +141,27 @@ func TestGetPayloadData(t *testing.T) {
 		fmt.Println(p.GetHash())
 		errorC <- errors.New("hash has not been computed")
 	}
+}
 
+func TestGetDefaultPayload(t *testing.T) {
+	p := GetDefaultPayload(bytes.NewBufferString("some data to encrypt"))
+	r, err := p.GetPayloadData()
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	errorC := make(chan error)
+	go func(errorC chan error) {
+		if _, err := ioutil.ReadAll(r); err != nil {
+			errorC <- err
+		}
+		errorC <- nil
+	}(errorC)
+
+	if err := <-errorC; err != nil {
+		t.Error(err)
+	} else if len(p.GetHash()) != 512/8 {
+		fmt.Println(p.GetHash())
+		errorC <- errors.New("hash has not been computed")
+	}
 }
