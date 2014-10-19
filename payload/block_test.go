@@ -6,9 +6,10 @@ import (
 	"crypto/cipher"
 	"errors"
 	"fmt"
-	"github.com/didiercrunch/filou/helper"
 	"reflect"
 	"testing"
+
+	"github.com/didiercrunch/filou/helper"
 )
 
 type Blocker func([]byte) (cipher.Block, error)

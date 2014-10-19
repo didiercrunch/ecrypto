@@ -2,10 +2,11 @@ package payload
 
 import (
 	"encoding/json"
-	"github.com/didiercrunch/filou/helper"
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/didiercrunch/filou/helper"
 )
 
 func TestJsonifyMetadata(t *testing.T) {

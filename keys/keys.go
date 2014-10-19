@@ -5,8 +5,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/didiercrunch/filou/shared"
 	"math/big"
+
+	"github.com/didiercrunch/filou/shared"
 )
 
 const (

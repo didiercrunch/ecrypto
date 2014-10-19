@@ -3,8 +3,9 @@ package payload
 import (
 	"crypto/cipher"
 	"crypto/des"
-	"github.com/didiercrunch/filou/helper"
 	"testing"
+
+	"github.com/didiercrunch/filou/helper"
 )
 
 func getAnyBlock() cipher.Block {

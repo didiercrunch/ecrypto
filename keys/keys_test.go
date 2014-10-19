@@ -3,10 +3,11 @@ package keys
 import (
 	"crypto/rsa"
 	"encoding/json"
-	. "github.com/didiercrunch/filou/helper"
 	"math/big"
 	"reflect"
 	"testing"
+
+	. "github.com/didiercrunch/filou/helper"
 )
 
 func TestGetDefaultRSAPublicKey(t *testing.T) {

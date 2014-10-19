@@ -5,10 +5,11 @@ import (
 	"crypto/rsa"
 	"encoding/json"
 	"errors"
-	"github.com/didiercrunch/filou/keys"
-	"github.com/didiercrunch/filou/shared"
 	"os"
 	"path"
+
+	"github.com/didiercrunch/filou/keys"
+	"github.com/didiercrunch/filou/shared"
 )
 
 type KeyGenerator struct {

@@ -2,12 +2,13 @@ package keygenerator
 
 import (
 	"encoding/json"
-	"github.com/didiercrunch/filou/keys"
 	"io/ioutil"
 	"os"
 	"path"
 	"reflect"
 	"testing"
+
+	"github.com/didiercrunch/filou/keys"
 )
 
 func TestCreateRSAKey(t *testing.T) {

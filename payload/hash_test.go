@@ -5,12 +5,13 @@ import (
 	cryptoSHA512 "crypto/sha512"
 	"encoding/hex"
 	"errors"
-	"github.com/didiercrunch/filou/helper"
 	"hash"
 	"io"
 	"io/ioutil"
 	"reflect"
 	"testing"
+
+	"github.com/didiercrunch/filou/helper"
 )
 
 var __ = ioutil.Discard
