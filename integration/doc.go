@@ -1,0 +1,5 @@
+package integration
+
+/*
+Integration tests.
+*/

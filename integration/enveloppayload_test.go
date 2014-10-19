@@ -1,10 +1,12 @@
 package integration
 
 import (
+	"archive/zip"
 	"bytes"
 	"testing"
 
 	"github.com/didiercrunch/filou/envelop"
+	"github.com/didiercrunch/filou/helper"
 	"github.com/didiercrunch/filou/payload"
 )
 
@@ -33,7 +35,16 @@ func (this *mockSigner) Sign(data []byte) ([]byte, error) {
 func TestPayloadCanBeUseInEnvelop(t *testing.T) {
 	payload_ := payload.GetDefaultPayload(bytes.NewBufferString("some data to encrypt"))
 	envelop := envelop.NewEnveloper(&mockEncryptor{}, payload_, &mockSigner{})
-	if envelop == nil {
-		t.Fail()
+	w := helper.NewMockIoWriter()
+	if err := envelop.WriteToWriter(w); err != nil {
+		t.Error(err)
+	}
+	r, err := zip.NewReader(w.ReaderAt(), int64(w.Length()))
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	if len(r.File) != 3 {
+		t.Error("wrong file number")
 	}
 }

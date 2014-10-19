@@ -4,10 +4,11 @@ import (
 	"archive/zip"
 	"bytes"
 	"errors"
-	"github.com/didiercrunch/filou/helper"
 	"io"
 	"reflect"
 	"testing"
+
+	"github.com/didiercrunch/filou/helper"
 )
 
 type mockPayload struct {

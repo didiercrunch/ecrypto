@@ -4,10 +4,11 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/didiercrunch/filou/helper"
 	"io/ioutil"
 	"reflect"
 	"testing"
+
+	"github.com/didiercrunch/filou/helper"
 )
 
 func TestPayloadGetHashMethod(t *testing.T) {
