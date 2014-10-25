@@ -6,8 +6,9 @@ import (
 	"crypto/rsa"
 	"crypto/sha512"
 	"fmt"
-	"github.com/didiercrunch/filou/helper"
 	"testing"
+
+	"github.com/didiercrunch/filou/helper"
 )
 
 func TestHashIOReader(t *testing.T) {

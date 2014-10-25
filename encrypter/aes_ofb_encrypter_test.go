@@ -4,10 +4,11 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
-	. "github.com/didiercrunch/filou/helper"
 	"reflect"
 	"strings"
 	"testing"
+
+	. "github.com/didiercrunch/filou/helper"
 )
 
 func NewMockAESOFBEncrypter() *AESOFBEncrypter {

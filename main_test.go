@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/codegangsta/cli"
 	"testing"
+
+	"github.com/codegangsta/cli"
 )
 
 func TestCreateKeyCommand(t *testing.T) {

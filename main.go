@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/codegangsta/cli"
 	"github.com/didiercrunch/filou/keygenerator"
-	"os"
 )
 
 var createKeyCommand = cli.Command{

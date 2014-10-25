@@ -2,9 +2,7 @@ package keys
 
 import (
 	"crypto/rsa"
-	"encoding/json"
 	"math/big"
-	"reflect"
 	"testing"
 
 	. "github.com/didiercrunch/filou/helper"
@@ -44,39 +42,5 @@ func TestGetDefaultRSAPrivateKey(t *testing.T) {
 	}
 	if pk.Key.Q.Int64() != 11 {
 		t.Error("bad D")
-	}
-}
-
-func TestRSAPrivateKeyJsonification(t *testing.T) {
-	key := &RSAPrivateKey{B(1023), B(2112), B(328723), B(2332), 89}
-	data, err := json.Marshal(key)
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	key2 := new(RSAPrivateKey)
-	if err := json.Unmarshal(data, key2); err != nil {
-		t.Error(err)
-		return
-	}
-	if !reflect.DeepEqual(key, key2) {
-		t.Fail()
-	}
-}
-
-func TestRSAPublicKeyJsonification(t *testing.T) {
-	key := &RSAPublicKey{B(1023), 89}
-	data, err := json.Marshal(key)
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	key2 := new(RSAPublicKey)
-	if err := json.Unmarshal(data, key2); err != nil {
-		t.Error(err)
-		return
-	}
-	if !reflect.DeepEqual(key, key2) {
-		t.Fail()
 	}
 }
