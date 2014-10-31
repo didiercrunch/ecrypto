@@ -41,3 +41,15 @@ func TestRSAPublicKeyJsonification(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestRSAPublicKeyJsonificationFromString(t *testing.T) {
+	data := []byte(`{"N":"3ff","E":89}`)
+	key := new(RSAPublicKey)
+	if err := json.Unmarshal(data, key); err != nil {
+		t.Error(err)
+		return
+	}
+	if !reflect.DeepEqual(key, &RSAPublicKey{B(1023), 89}) {
+		t.Fail()
+	}
+}

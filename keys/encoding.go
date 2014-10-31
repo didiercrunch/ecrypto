@@ -10,11 +10,11 @@ import (
 // All the method to encode/decode keys to json, yaml...
 
 type encodingRSAKey struct {
-	N string
-	P string
-	Q string
-	D string
-	E int
+	N string `json:"n,omitempty"`
+	P string `json:"p,omitempty"`
+	Q string `json:"q,omitempty"`
+	D string `json:"d,omitempty"`
+	E int    `json:"e,omitempty"`
 }
 
 func (this *encodingRSAKey) CreateFromRSAPrivateKey(key *RSAPrivateKey) *encodingRSAKey {

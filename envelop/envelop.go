@@ -105,7 +105,12 @@ func (this *Enveloper) WriteEncryptedKey(z *zip.Writer) error {
 func (this *Enveloper) WriteToWriter(w io.Writer) error {
 	z := zip.NewWriter(w)
 	defer z.Close()
-	if err := this.WritePayload(z); err != nil {
+	errc := make(chan error)
+	go func() {
+		errc <- this.WritePayload(z)
+	}()
+
+	if err := <-errc; err != nil {
 		return err
 	}
 	if err := this.CreateEnvelopCompletely(); err != nil {

@@ -137,7 +137,6 @@ func (this *Payload) computeHash(reader io.Reader) (io.Reader, error) {
 	}(readerHash)
 
 	return read, nil
-
 }
 
 func (this *Payload) encrypt(reader io.Reader, stream cipher.Stream) (io.Reader, error) {
@@ -148,5 +147,4 @@ func (this *Payload) encrypt(reader io.Reader, stream cipher.Stream) (io.Reader,
 		cipherWriter.Close()
 	}(stream)
 	return this.computeHash(ret)
-
 }
