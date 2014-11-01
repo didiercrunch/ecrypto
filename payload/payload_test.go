@@ -2,12 +2,14 @@ package payload
 
 import (
 	"bytes"
+	"crypto/rand"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"reflect"
 	"testing"
 
+	"github.com/didiercrunch/filou/contract"
 	"github.com/didiercrunch/filou/helper"
 )
 
@@ -165,4 +167,24 @@ func TestGetDefaultPayload(t *testing.T) {
 		fmt.Println(p.GetHash())
 		errorC <- errors.New("hash has not been computed")
 	}
+}
+
+func TestGetPayload(t *testing.T) {
+	c := &contract.AcceptedContract{Hash: "sha512"}
+	p, err := GetPayload(nil, c)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	expectedPayload := &Payload{
+		DataSource: nil,
+		Random:     rand.Reader,
+		HashMethod: SHA512,
+		Block:      AES256,
+		BlockMode:  OFB,
+	}
+	if p.HashMethod != expectedPayload.HashMethod {
+		t.Error("bad hash method")
+	}
+
 }

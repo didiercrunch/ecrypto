@@ -6,6 +6,8 @@ import (
 	"crypto/rand"
 	"encoding/json"
 	"io"
+
+	"github.com/didiercrunch/filou/contract"
 )
 
 type BlockModeStream func(block cipher.Block, iv []byte) cipher.Stream
@@ -30,6 +32,17 @@ func GetDefaultPayload(dataSource io.Reader) *Payload {
 		Block:      AES256,
 		BlockMode:  OFB,
 	}
+}
+
+func GetPayload(dataSource io.Reader, acceptedContract *contract.AcceptedContract) (*Payload, error) {
+	ret := &Payload{DataSource: dataSource, Random: rand.Reader}
+	errs := make([]error, 0)
+	var err error
+	if ret.HashMethod, err = GetHashByHashName(acceptedContract.Hash); err != nil {
+		errs = append(errs, err)
+	}
+
+	return ret, nil
 }
 
 type payloadWriter struct {

@@ -12,6 +12,14 @@ type Hash string
 
 const SHA512 Hash = "sha512"
 
+func GetHashByHashName(hashName string) (Hash, error) {
+	ret := Hash(hashName)
+	if _, err := ret.New(); err != nil {
+		return "", errors.New("unsupported hash function " + hashName)
+	}
+	return ret, nil
+}
+
 func (this Hash) New() (hash.Hash, error) {
 	switch this {
 	case SHA512:

@@ -2,7 +2,8 @@ package contract
 
 import (
 	"errors"
-	"strings"
+
+	"github.com/didiercrunch/filou/helper"
 )
 
 type AcceptedContract struct {
@@ -19,13 +20,6 @@ func listContains(lst []string, elm string) bool {
 		}
 	}
 	return false
-}
-
-func joinAsError(msg []string) error {
-	if len(msg) > 0 {
-		return errors.New(strings.Join(msg, "\n"))
-	}
-	return nil
 }
 
 func getFirstItemInList1ThatIsAlsoInList2(lst1, lst2 []string) (string, error) {
@@ -75,5 +69,5 @@ func GetAcceptedContract(prvCtr *PrivateContract, pubCtr *PublicContract) (*Acce
 		errs = append(errs, err.Error())
 	}
 
-	return ret, joinAsError(errs)
+	return ret, helper.JoinAsError(errs)
 }

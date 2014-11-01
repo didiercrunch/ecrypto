@@ -14,8 +14,6 @@ import (
 	"github.com/didiercrunch/filou/helper"
 )
 
-var __ = ioutil.Discard
-
 func TestUnsupportedHash(t *testing.T) {
 	unsupportedHashes := []Hash{"md5"}
 	for _, h := range unsupportedHashes {
@@ -75,5 +73,23 @@ func TestHashOnTheWay(t *testing.T) {
 	}
 	if !reflect.DeepEqual(<-outputHash, expectedHash) {
 		t.Error("bad hash\nexpected: ", expectedHash, "\nreceived:", outputHash)
+	}
+}
+
+func TestGetHashByHashNameForAcceptedHashFunctions(t *testing.T) {
+	acceptedHashFunctions := []string{"sha512"}
+	for _, h := range acceptedHashFunctions {
+		if _, err := GetHashByHashName(h); err != nil {
+			t.Error(err)
+		}
+	}
+}
+
+func TestGetHashByHashNameForNotAcceptedHashFunctions(t *testing.T) {
+	unaccepterHashFunctions := []string{"md5"}
+	for _, h := range unaccepterHashFunctions {
+		if _, err := GetHashByHashName(h); err == nil {
+			t.Error("should never accept hash function " + h)
+		}
 	}
 }

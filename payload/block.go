@@ -45,3 +45,11 @@ func (this Block) CreateBlock(rd io.Reader) (cipher.Block, []byte, error) {
 	block, err := aes.NewCipher(key)
 	return block, key, err
 }
+
+func GetBlockByBlockName(blockName string) (Block, error) {
+	ret := Hash(hashName)
+	if _, err := ret.New(); err != nil {
+		return "", errors.New("block encryption " + blockName + " is not supported")
+	}
+	return ret, nil
+}

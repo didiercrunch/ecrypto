@@ -6,8 +6,10 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"io"
+	"io/ioutil"
 	"math/big"
 	"math/rand"
+	"os"
 )
 
 func B(x int64) *big.Int {
@@ -119,4 +121,20 @@ func GetRSAPrivateKey(size int) *rsa.PrivateKey {
 	}
 	return key
 
+}
+
+func GetTmpEmptyFile() *os.File {
+	if f, err := ioutil.TempFile("", ""); err != nil {
+		panic(err)
+	} else {
+		return f
+	}
+}
+
+func GetTmpEmptyDir() string {
+	if dirName, err := ioutil.TempDir("", ""); err != nil {
+		panic(err)
+	} else {
+		return dirName
+	}
 }
