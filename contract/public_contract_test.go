@@ -36,9 +36,9 @@ func expectJson(c *PublicContract, jsonData string) error {
 
 func TestSimpleJsonification(t *testing.T) {
 	c := &PublicContract{
-		AcceptedHashes:      []string{"sha246"},
-		AcceptedBlockCypher: []string{"aes"},
-		RSAPublicKey:        []*keys.RSAPublicKey{&keys.RSAPublicKey{helper.B(12), 3}},
+		AcceptedHashes:       []string{"sha246"},
+		AcceptedBlockCyphers: []string{"aes"},
+		RSAPublicKey:         []*keys.RSAPublicKey{&keys.RSAPublicKey{helper.B(12), 3}},
 	}
 	if err := assertJSONMarshalling(c); err != nil {
 		t.Error(err)
@@ -47,9 +47,9 @@ func TestSimpleJsonification(t *testing.T) {
 
 func TestEmptyRSAPublicKey(t *testing.T) {
 	c := &PublicContract{
-		AcceptedHashes:      []string{"sha246"},
-		AcceptedBlockCypher: []string{"aes"},
-		RSAPublicKey:        []*keys.RSAPublicKey{&keys.RSAPublicKey{helper.B(12), 3}},
+		AcceptedHashes:       []string{"sha246"},
+		AcceptedBlockCyphers: []string{"aes"},
+		RSAPublicKey:         []*keys.RSAPublicKey{&keys.RSAPublicKey{helper.B(12), 3}},
 	}
 	jsonData := `{
 		"accepted_hashes": ["sha246"], 

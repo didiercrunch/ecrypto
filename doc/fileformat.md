@@ -24,13 +24,16 @@ url: "the url where to fiofbnd an exact copy of the contract"
 root_url: "the url where to find the most up to date version of the contract"
 
 accepted_hashs:
-	- sha512
+	- sha512    #  first choice
+	- sha256    #  second choice
 
 accepted_block_cypher:
-	- aes
+	- aes	    #  first choice
+	- 3des      #  second choice
 
 accepted_modes:
-	- ofb
+	- ofb       #  first choice
+	- cbc       #  second choice
 
 signatures_required: yes
 

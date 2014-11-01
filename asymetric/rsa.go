@@ -48,9 +48,6 @@ func (this *RsaOaepPss) Decrypt(ciphertext []byte) ([]byte, error) {
 
 func (this *RsaOaepPss) Sign(hashedData []byte) ([]byte, error) {
 	ret, err := rsa.SignPSS(this.Random, this.PrivateKey, this.Hash, hashedData, nil)
-	if err != nil {
-		fmt.Println(">>> ", len(hashedData))
-	}
 	return ret, err
 }
 
