@@ -43,3 +43,13 @@ func (this BlockMode) GetCipherStream(block cipher.Block, rd io.Reader) (stream 
 	}
 	return streamCreator(block, iv), iv, nil
 }
+
+func GetBlockModeByName(blockModeName string) (BlockMode, error) {
+	ret := BlockMode(blockModeName)
+	switch ret {
+	case OFB:
+		return ret, nil
+	default:
+		return "", errors.New("block mode " + blockModeName + " is not supported")
+	}
+}

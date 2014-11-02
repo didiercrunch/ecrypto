@@ -25,7 +25,7 @@ func (this Hash) New() (hash.Hash, error) {
 	case SHA512:
 		return cryptoSHA512.New(), nil
 	default:
-		msg := fmt.Sprintf("hash '%s' is not supported")
+		msg := fmt.Sprintf("hash '%s' is not supported", this)
 		return nil, errors.New(msg)
 	}
 }

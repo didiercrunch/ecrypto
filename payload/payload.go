@@ -8,6 +8,7 @@ import (
 	"io"
 
 	"github.com/didiercrunch/filou/contract"
+	"github.com/didiercrunch/filou/helper"
 )
 
 type BlockModeStream func(block cipher.Block, iv []byte) cipher.Stream
@@ -41,8 +42,14 @@ func GetPayload(dataSource io.Reader, acceptedContract *contract.AcceptedContrac
 	if ret.HashMethod, err = GetHashByHashName(acceptedContract.Hash); err != nil {
 		errs = append(errs, err)
 	}
+	if ret.Block, err = GetBlockByBlockName(acceptedContract.BlockCipher); err != nil {
+		errs = append(errs, err)
+	}
+	if ret.BlockMode, err = GetBlockModeByName(acceptedContract.BlockCipherMode); err != nil {
+		errs = append(errs, err)
+	}
 
-	return ret, nil
+	return ret, helper.JoinErrors(errs)
 }
 
 type payloadWriter struct {

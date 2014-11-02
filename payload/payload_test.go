@@ -170,7 +170,11 @@ func TestGetDefaultPayload(t *testing.T) {
 }
 
 func TestGetPayload(t *testing.T) {
-	c := &contract.AcceptedContract{Hash: "sha512"}
+	c := &contract.AcceptedContract{
+		Hash:            "sha512",
+		BlockCipher:     "aes256",
+		BlockCipherMode: "ofb",
+	}
 	p, err := GetPayload(nil, c)
 	if err != nil {
 		t.Error(err)
@@ -185,6 +189,12 @@ func TestGetPayload(t *testing.T) {
 	}
 	if p.HashMethod != expectedPayload.HashMethod {
 		t.Error("bad hash method")
+	}
+	if p.Block != expectedPayload.Block {
+		t.Error("bad block method", p.Block)
+	}
+	if p.BlockMode != expectedPayload.BlockMode {
+		t.Error("bad block method", p.Block)
 	}
 
 }

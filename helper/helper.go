@@ -11,3 +11,13 @@ func JoinAsError(msg []string) error {
 	}
 	return nil
 }
+
+func JoinErrors(errs []error) error {
+	msgs := make([]string, 0, len(errs))
+	for _, err := range errs {
+		if err != nil {
+			msgs = append(msgs, err.Error())
+		}
+	}
+	return JoinAsError(msgs)
+}
