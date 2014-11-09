@@ -38,7 +38,11 @@ func TestSimpleJsonification(t *testing.T) {
 	c := &PublicContract{
 		AcceptedHashes:       []string{"sha246"},
 		AcceptedBlockCyphers: []string{"aes"},
-		RSAPublicKey:         []*keys.RSAPublicKey{&keys.RSAPublicKey{helper.B(12), 3}},
+
+		AcceptedAsynchronousEncryptionScheme: []string{"rsa_oaep"},
+		AcceptedSignatureScheme:              []string{"rsa_pss"},
+
+		RSAPublicKey: []*keys.RSAPublicKey{&keys.RSAPublicKey{helper.B(12), 3}},
 	}
 	if err := assertJSONMarshalling(c); err != nil {
 		t.Error(err)
@@ -49,11 +53,20 @@ func TestEmptyRSAPublicKey(t *testing.T) {
 	c := &PublicContract{
 		AcceptedHashes:       []string{"sha246"},
 		AcceptedBlockCyphers: []string{"aes"},
-		RSAPublicKey:         []*keys.RSAPublicKey{&keys.RSAPublicKey{helper.B(12), 3}},
+
+		AcceptedAsynchronousEncryptionScheme: []string{"rsa_oaep"},
+		AcceptedSignatureScheme:              []string{"rsa_pss"},
+
+		RSAPublicKey: []*keys.RSAPublicKey{&keys.RSAPublicKey{helper.B(12), 3}},
 	}
 	jsonData := `{
 		"accepted_hashes": ["sha246"], 
 		"accepted_block_cypher": ["aes"],
+		
+		
+		"accepted_asynchronous_encryption_scheme":  ["rsa_oaep"],
+		"accepted_signature_scheme":  ["rsa_pss"],
+		
 		"rsa_public_key": [{"n": "c", "e": 3}]
 	}`
 	if err := expectJson(c, jsonData); err != nil {

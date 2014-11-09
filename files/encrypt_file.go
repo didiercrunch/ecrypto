@@ -9,7 +9,12 @@ import (
 )
 
 func EncryptFile(reader io.Reader, writer io.Writer, acceptedContract *contract.AcceptedContract) error {
-	payload_ := payload.GetDefaultPayload(reader)
+	payload_, err := payload.GetPayload(reader, acceptedContract)
+	if err != nil {
+		return err
+	}
+
+	//signer :=
 	envelop := envelop.NewEnveloper(nil, payload_, nil)
 	return envelop.WriteToWriter(writer)
 }

@@ -3,14 +3,22 @@ package contract
 import (
 	"errors"
 
+	"crypto/rsa"
 	"github.com/didiercrunch/filou/helper"
 )
 
+type GetRSAPrivateKey func() (*rsa.PrivateKey, error)
+
 type AcceptedContract struct {
-	Hash                  string
-	BlockCipher           string
-	BlockCipherMode       string
-	AsymetricCryptography string
+	Hash            string
+	BlockCipher     string
+	BlockCipherMode string
+
+	AsynchronousEncryptionScheme string
+	SignatureScheme              string
+
+	RsaPublicKey  *rsa.PublicKey
+	RsaPrivateKey GetRSAPrivateKey
 }
 
 func listContains(lst []string, elm string) bool {
@@ -29,6 +37,22 @@ func getFirstItemInList1ThatIsAlsoInList2(lst1, lst2 []string) (string, error) {
 		}
 	}
 	return "", errors.New("no items in list1 is in list2")
+}
+
+func getAsynchronousEncryptionScheme(prvCtr *PrivateContract, pubCtr *PublicContract) (string, error) {
+	if b, err := getFirstItemInList1ThatIsAlsoInList2(pubCtr.AcceptedAsynchronousEncryptionScheme, prvCtr.AcceptedAsynchronousEncryptionScheme); err != nil {
+		return "", errors.New("cannot find a asynchronous encryption scheme that satisfy both contracts")
+	} else {
+		return b, nil
+	}
+}
+
+func getSignatureScheme(prvCtr *PrivateContract, pubCtr *PublicContract) (string, error) {
+	if b, err := getFirstItemInList1ThatIsAlsoInList2(pubCtr.AcceptedSignatureScheme, prvCtr.AcceptedSignatureScheme); err != nil {
+		return "", errors.New("cannot find a signature scheme that satisfy both contracts")
+	} else {
+		return b, nil
+	}
 }
 
 func getBestBlockCipher(prvCtr *PrivateContract, pubCtr *PublicContract) (string, error) {
@@ -66,6 +90,12 @@ func GetAcceptedContract(prvCtr *PrivateContract, pubCtr *PublicContract) (*Acce
 		errs = append(errs, err.Error())
 	}
 	if ret.BlockCipherMode, err = getBestBlockCipherMode(prvCtr, pubCtr); err != nil {
+		errs = append(errs, err.Error())
+	}
+	if ret.AsynchronousEncryptionScheme, err = getAsynchronousEncryptionScheme(prvCtr, pubCtr); err != nil {
+		errs = append(errs, err.Error())
+	}
+	if ret.SignatureScheme, err = getSignatureScheme(prvCtr, pubCtr); err != nil {
 		errs = append(errs, err.Error())
 	}
 

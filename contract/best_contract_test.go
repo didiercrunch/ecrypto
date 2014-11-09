@@ -48,6 +48,12 @@ func TestGetAcceptedContract(t *testing.T) {
 	pubCtr.AcceptedBlockCypherModes = []string{"ofb"}
 	prvCtr.AcceptedBlockCypherModes = []string{"ofb"}
 
+	pubCtr.AcceptedAsynchronousEncryptionScheme = []string{"rsa_oaep"}
+	prvCtr.AcceptedAsynchronousEncryptionScheme = []string{"rsa_oaep"}
+
+	pubCtr.AcceptedSignatureScheme = []string{"rsa_pss"}
+	prvCtr.AcceptedSignatureScheme = []string{"rsa_pss"}
+
 	ac, err := GetAcceptedContract(prvCtr, pubCtr)
 	if err != nil {
 		t.Error(err)
@@ -58,6 +64,12 @@ func TestGetAcceptedContract(t *testing.T) {
 	}
 	if ac.BlockCipher != "aes" {
 		t.Error("bad block cipher")
+	}
+	if ac.SignatureScheme != "rsa_pss" {
+		t.Error("bad signature scheme")
+	}
+	if ac.AsynchronousEncryptionScheme != "rsa_oaep" {
+		t.Error("bad asynchronous encryption scheme")
 	}
 
 }
