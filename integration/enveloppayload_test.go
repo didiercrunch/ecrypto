@@ -23,16 +23,23 @@ func generateRSAKeyPair() (*rsa.PrivateKey, *rsa.PublicKey) {
 	}
 }
 
-func getEncryterAndSigner() *asymetric.RsaOaepPss {
+func getEncryter() *asymetric.RsaOaepEncrypter {
 	alicePrivateKey, _ := generateRSAKeyPair()
 	_, bobPubKey := generateRSAKeyPair()
-	return &asymetric.RsaOaepPss{alicePrivateKey, bobPubKey, crypto.SHA512, random}
+	return &asymetric.RsaOaepEncrypter{alicePrivateKey, bobPubKey, crypto.SHA512, random}
+}
+
+func getSigner() *asymetric.RsaPssSigner {
+	alicePrivateKey, _ := generateRSAKeyPair()
+	_, bobPubKey := generateRSAKeyPair()
+	return &asymetric.RsaPssSigner{alicePrivateKey, bobPubKey, crypto.SHA512, random}
 }
 
 func TestPayloadCanBeUseInEnvelop(t *testing.T) {
-	encryterAndSigner := getEncryterAndSigner()
+	encrypter := getEncryter()
+	signer := getSigner()
 	payload_ := payload.GetDefaultPayload(bytes.NewBufferString("some data to encrypt"))
-	envelop := envelop.NewEnveloper(encryterAndSigner, payload_, encryterAndSigner)
+	envelop := envelop.NewEnveloper(encrypter, payload_, signer)
 	w := helper.NewMockIoWriter()
 	if err := envelop.WriteToWriter(w); err != nil {
 		t.Error(err)

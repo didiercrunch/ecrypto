@@ -56,11 +56,19 @@ func GetDefaultRSAPublicKey(publicKey *rsa.PublicKey) *PublicKey {
 	return &PublicKey{Type: "RSA", Version: shared.VERSION, Key: key, Accept: accept}
 }
 
-func GetDefaultRSAPrivateKey(publicKey *rsa.PrivateKey) (*PrivateKey, error) {
-	if err := publicKey.Validate(); err != nil {
+func NewRSAPublicKey(key *rsa.PublicKey) *RSAPublicKey {
+	return &RSAPublicKey{key.N, key.E}
+}
+
+func NewRSAPrivateKey(key *rsa.PrivateKey) *RSAPrivateKey {
+	return &RSAPrivateKey{key.N, key.Primes[0], key.Primes[1], key.D, key.E}
+}
+
+func GetDefaultRSAPrivateKey(privateKey *rsa.PrivateKey) (*PrivateKey, error) {
+	if err := privateKey.Validate(); err != nil {
 		return nil, err
 	}
-	key := &RSAPrivateKey{publicKey.N, publicKey.Primes[0], publicKey.Primes[1], publicKey.D, publicKey.E}
+	key := NewRSAPrivateKey(privateKey)
 	accept := &AcceptMethods{
 		DEFAULT_BLOCK_CYPHER,
 		DEFAULT_BLOCK_CYPHER_MODE,

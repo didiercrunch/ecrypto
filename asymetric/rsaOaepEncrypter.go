@@ -11,7 +11,7 @@ import (
 	"io"
 )
 
-type RsaOaepPss struct {
+type RsaOaepEncrypter struct {
 	PrivateKey *rsa.PrivateKey
 	PublicKey  *rsa.PublicKey
 	Hash       crypto.Hash
@@ -19,7 +19,7 @@ type RsaOaepPss struct {
 	Random io.Reader
 }
 
-func (this *RsaOaepPss) getHash() (crypto.Hash, error) {
+func (this *RsaOaepEncrypter) getHash() (crypto.Hash, error) {
 	if !this.Hash.Available() {
 		return 0, errors.New(fmt.Sprintf("hash function %v is unabailable", this.Hash))
 	} else {
@@ -27,7 +27,7 @@ func (this *RsaOaepPss) getHash() (crypto.Hash, error) {
 	}
 }
 
-func (this *RsaOaepPss) Encrypt(data []byte) ([]byte, error) {
+func (this *RsaOaepEncrypter) Encrypt(data []byte) ([]byte, error) {
 	label := make([]byte, 0)
 	if hash, err := this.getHash(); err != nil {
 		return nil, err
@@ -37,20 +37,11 @@ func (this *RsaOaepPss) Encrypt(data []byte) ([]byte, error) {
 
 }
 
-func (this *RsaOaepPss) Decrypt(ciphertext []byte) ([]byte, error) {
+func (this *RsaOaepEncrypter) Decrypt(ciphertext []byte) ([]byte, error) {
 	label := make([]byte, 0)
 	if hash, err := this.getHash(); err != nil {
 		return nil, err
 	} else {
 		return rsa.DecryptOAEP(hash.New(), this.Random, this.PrivateKey, ciphertext, label)
 	}
-}
-
-func (this *RsaOaepPss) Sign(hashedData []byte) ([]byte, error) {
-	ret, err := rsa.SignPSS(this.Random, this.PrivateKey, this.Hash, hashedData, nil)
-	return ret, err
-}
-
-func (this *RsaOaepPss) VerifySignature(hashedData []byte, signature []byte) error {
-	return rsa.VerifyPSS(this.PublicKey, this.Hash, hashedData, signature, nil)
 }
