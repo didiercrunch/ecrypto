@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"math/big"
 	"math/rand"
+	"os"
 	"reflect"
 	"testing"
 )
@@ -133,5 +134,37 @@ func TestGetReadLength(t *testing.T) {
 	}
 	if m.GetReadLength() != 4*10+3 {
 		t.Error("bad read length")
+	}
+}
+
+func TestGetTmpFileWithText(t *testing.T) {
+
+	f := GetTmpFileWithText("some text")
+	defer func() {
+		if err := os.Remove(f.Name()); err != nil {
+			t.Error(err)
+		}
+	}()
+	if _, err := os.Stat(f.Name()); os.IsNotExist(err) {
+		t.Error("tmp file does not exists")
+	}
+}
+
+func TestGetTmpEmptyFile(t *testing.T) {
+	f := GetTmpEmptyFile()
+	defer func() {
+		if err := os.Remove(f.Name()); err != nil {
+			t.Error(err)
+		}
+	}()
+	if _, err := os.Stat(f.Name()); os.IsNotExist(err) {
+		t.Error("tmp file does not exists")
+	}
+}
+
+func TestGetTmpFileName(t *testing.T) {
+	f := GetTmpFileName()
+	if _, err := os.Stat(f); !os.IsNotExist(err) {
+		t.Error("tmp file exists")
 	}
 }

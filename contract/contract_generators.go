@@ -78,6 +78,7 @@ func (this *ContractsGenerator) createPublicContractWithGoodDefaultValues(key *k
 	this.privateContract.AcceptedSignatureScheme = []string{"rsa_pss"}
 	this.privateContract.AcceptedBlockCypherModes = []string{"ofb"}
 	this.privateContract.AcceptedBlockCyphers = []string{"aes"}
+	this.privateContract.AcceptedHashes = []string{"sha384", "sha512", "sha256"}
 	this.privateContract.RSAPublicKey = []*keys.RSAPublicKey{key}
 }
 

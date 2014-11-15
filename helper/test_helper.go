@@ -5,6 +5,7 @@ import (
 	"crypto/rsa"
 	"encoding/binary"
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"math/big"
@@ -123,6 +124,8 @@ func GetRSAPrivateKey(size int) *rsa.PrivateKey {
 
 }
 
+// return a tmp file in the default tmp directory.  If fails, the function
+// will panic
 func GetTmpEmptyFile() *os.File {
 	if f, err := ioutil.TempFile("", ""); err != nil {
 		panic(err)
@@ -131,6 +134,32 @@ func GetTmpEmptyFile() *os.File {
 	}
 }
 
+//  returned a closed tmp file with text in it.
+func GetTmpFileWithText(text string) *os.File {
+	f := GetTmpEmptyFile()
+	defer func() {
+		if err := f.Close(); err != nil {
+			panic(err)
+		}
+	}()
+
+	fmt.Fprint(f, text)
+	return f
+}
+
+//  returns a path that can be safely use as tmp file
+func GetTmpFileName() string {
+	f := GetTmpEmptyFile()
+	if err := f.Close(); err != nil {
+		panic(err)
+	}
+	if err := os.Remove(f.Name()); err != nil {
+		panic(err)
+	}
+	return f.Name()
+}
+
+//  create a tmp dir and return its path.  If failing, the method will panic
 func GetTmpEmptyDir() string {
 	if dirName, err := ioutil.TempDir("", ""); err != nil {
 		panic(err)

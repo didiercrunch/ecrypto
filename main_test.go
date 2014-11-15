@@ -17,7 +17,7 @@ func TestCreateKeyCommand(t *testing.T) {
 	}
 	app := cli.NewApp()
 	app.Commands = []cli.Command{c}
-	args := []string{"file", "createkey", "-size", "22"}
+	args := []string{"file", "create-contracts", "-size", "22"}
 	app.Run(args)
 	if !hasBeenCalled {
 		t.Error("sub command *createkey* has not been called")
